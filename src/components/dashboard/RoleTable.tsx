@@ -7,9 +7,10 @@ type SortKey = "role" | "department" | "level" | "fteCount" | "taskCount" | "hum
 interface RoleTableProps {
   rows: RoleSummary[];
   activeAIType: AIType;
+  maxRows?: number;
 }
 
-export function RoleTable({ rows, activeAIType }: RoleTableProps) {
+export function RoleTable({ rows, activeAIType, maxRows = 15 }: RoleTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>("role");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
@@ -24,8 +25,8 @@ export function RoleTable({ rows, activeAIType }: RoleTableProps) {
       }
       return (Number(aVal) - Number(bVal)) * multiplier;
     });
-    return cloned;
-  }, [rows, sortDir, sortKey]);
+    return cloned.slice(0, maxRows);
+  }, [rows, sortDir, sortKey, maxRows]);
 
   function applySort(key: SortKey) {
     if (key === sortKey) {

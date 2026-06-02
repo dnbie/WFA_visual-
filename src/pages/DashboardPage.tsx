@@ -176,11 +176,12 @@ export function DashboardPage() {
   const subDeptAreaData = subDeptData
     .map((d) => ({
       label: d.label,
+      shortLabel: d.label.length > 18 ? `${d.label.slice(0, 18)}...` : d.label,
       ai: d.agentic + d.generative + d.traditional,
       human: d.human
     }))
     .sort((a, b) => b.ai - a.ai)
-    .slice(0, 10);
+    .slice(0, 8);
 
   const avgAgentic = filteredRows.length ? filteredRows.reduce((s, r) => s + r.agentic, 0) / filteredRows.length : 0;
   const avgGenerative = filteredRows.length ? filteredRows.reduce((s, r) => s + r.generative, 0) / filteredRows.length : 0;
@@ -395,12 +396,19 @@ export function DashboardPage() {
           <DraggableCard id={id} editMode={layout.editMode} title={cardTitleMap(id)}>
             <div className="h-72 w-full">
               <ResponsiveContainer>
-                <AreaChart data={subDeptAreaData} margin={{ top: 8, right: 16, left: 4, bottom: 24 }}>
+                <AreaChart data={subDeptAreaData} margin={{ top: 8, right: 16, left: 4, bottom: 42 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="label" angle={-20} textAnchor="end" interval={0} height={58} />
+                  <XAxis
+                    dataKey="shortLabel"
+                    angle={-12}
+                    textAnchor="end"
+                    interval={0}
+                    height={72}
+                    tick={{ fontSize: 12 }}
+                  />
                   <YAxis tickFormatter={(v) => `${v}%`} />
-                  <Tooltip formatter={(value) => `${String(value ?? 0)}%`} />
-                  <Legend />
+                  <Tooltip labelFormatter={(_, payload) => payload?.[0]?.payload?.label ?? ""} formatter={(value) => `${String(value ?? 0)}%`} />
+                  <Legend verticalAlign="top" align="center" wrapperStyle={{ paddingBottom: 8 }} />
                   <Area
                     type="monotone"
                     dataKey="ai"
@@ -426,7 +434,7 @@ export function DashboardPage() {
       case "role-table":
         return (
           <DraggableCard id={id} full editMode={layout.editMode} title={cardTitleMap(id)}>
-            <RoleTable rows={filteredRows} activeAIType={filter.activeAIType} />
+            <RoleTable rows={filteredRows} activeAIType={filter.activeAIType} maxRows={15} />
           </DraggableCard>
         );
 
