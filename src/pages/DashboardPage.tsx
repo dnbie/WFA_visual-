@@ -166,6 +166,7 @@ export function DashboardPage() {
 
   const levelLineData = levelData.map((d) => ({
     label: d.label,
+    shortLabel: d.label.replace(/\s*\(.*?\)/g, ""),
     agentic: d.agentic,
     generative: d.generative,
     traditional: d.traditional,
@@ -354,12 +355,19 @@ export function DashboardPage() {
           <DraggableCard id={id} editMode={layout.editMode} title={cardTitleMap(id)}>
             <div className="h-72 w-full">
               <ResponsiveContainer>
-                <LineChart data={levelLineData} margin={{ top: 8, right: 16, left: 4, bottom: 24 }}>
+                <LineChart data={levelLineData} margin={{ top: 8, right: 16, left: 4, bottom: 42 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="label" angle={-20} textAnchor="end" interval={0} height={58} />
+                  <XAxis
+                    dataKey="shortLabel"
+                    angle={-12}
+                    textAnchor="end"
+                    interval={0}
+                    height={72}
+                    tick={{ fontSize: 12 }}
+                  />
                   <YAxis tickFormatter={(v) => `${v}%`} />
-                  <Tooltip formatter={(value) => `${String(value ?? 0)}%`} />
-                  <Legend />
+                  <Tooltip labelFormatter={(_, payload) => payload?.[0]?.payload?.label ?? ""} formatter={(value) => `${String(value ?? 0)}%`} />
+                  <Legend verticalAlign="top" align="center" wrapperStyle={{ paddingBottom: 8 }} />
                   <Line type="monotone" dataKey="agentic" stroke={getAIColor("agentic", filter.activeAIType)} strokeWidth={2} dot={false} />
                   <Line
                     type="monotone"
