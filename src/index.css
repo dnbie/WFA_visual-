@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --wfa-bg: #F8F9FA;
+  --wfa-card: #FFFFFF;
+  --wfa-border: #E6E6E6;
+  --wfa-text: #282728;
+  --wfa-text-secondary: #666666;
+  --wfa-text-muted: #999999;
+  --wfa-green: #86BC25;
+  --wfa-green-dark: #6B9B1E;
+  --wfa-green-light: #E8F5D6;
+  --wfa-teal: #00A3E0;
+  --wfa-navy: #005587;
+  --wfa-red: #DA291C;
+  --wfa-orange: #ED8B00;
+  --wfa-amber: #E8A317;
+  --wfa-purple: #9B59B6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Open Sans", "Segoe UI", Tahoma, sans-serif;
+  background: var(--wfa-bg);
+  color: var(--wfa-text);
+}
